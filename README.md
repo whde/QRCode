@@ -1,12 +1,12 @@
 # QRCode
 根据系统API, 封装二维码扫描
 
-/**1. link AVFoundation.framework  */
+- 1. link AVFoundation.framework 
 
-/**2. #import <AVFoundation/AVFoundation.h>  */
+- 2. #import <AVFoundation/AVFoundation.h>
 
-/**3. 拷贝以下代码  */
-```bash
+- 3. 拷贝以下代码
+```objective-c
 /*!
  *  扫一扫
  */
