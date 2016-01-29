@@ -6,6 +6,7 @@
 /**2. #import <AVFoundation/AVFoundation.h>  */
 
 /**3. 拷贝以下代码  */
+```bash
 /*!
  *  扫一扫
  */
@@ -74,4 +75,4 @@
         }
     }
 }
-
+```
