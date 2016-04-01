@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Qrcode by whde</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Qrcode</h1>
+      <h2 class="project-tagline">系统API扫描二维码,支持识别中文</h2>
+      <a href="https://github.com/whde/QRCode" class="btn">View on GitHub</a>
+      <a href="https://github.com/whde/QRCode/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/whde/QRCode/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="qrcode" class="anchor" href="#qrcode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>QRCode</h1>
+
+<p>根据系统API, 封装二维码扫描</p>
+
+<ul>
+<li><p>1.link AVFoundation.framework </p></li>
+<li><p>2.#import </p></li>
+<li><p>3.拷贝以下代码</p></li>
+</ul>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-c">/*!</span>
+<span class="pl-c"> *  扫一扫</span>
+<span class="pl-c"> */</span>
+- (<span class="pl-k">void</span>)intoQRCodeVC {
+    <span class="pl-c1">NSString</span> *mediaType = AVMediaTypeVideo;
+    AVAuthorizationStatus authStatus = [AVCaptureDevice <span class="pl-c1">authorizationStatusForMediaType:</span>mediaType];
+    <span class="pl-k">if</span>(authStatus == AVAuthorizationStatusDenied){
+        <span class="pl-k">if</span> (IS_VAILABLE_IOS8) {
+            UIAlertController *alert = [UIAlertController <span class="pl-c1">alertControllerWithTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>相机权限受限<span class="pl-pds">"</span></span> <span class="pl-c1">message:</span><span class="pl-s"><span class="pl-pds">@"</span>请在iPhone的<span class="pl-cce">\"</span>设置-&gt;隐私-&gt;相机<span class="pl-cce">\"</span>选项中,允许<span class="pl-cce">\"</span>自游邦<span class="pl-cce">\"</span>访问您的相机.<span class="pl-pds">"</span></span> <span class="pl-c1">preferredStyle:</span>UIAlertControllerStyleAlert];
+            [alert <span class="pl-c1">addAction:</span>[UIAlertAction <span class="pl-c1">actionWithTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>好<span class="pl-pds">"</span></span> <span class="pl-c1">style:</span>UIAlertActionStyleCancel <span class="pl-c1">handler:</span>^(UIAlertAction * _Nonnull action) {
+            }]];
+            [alert <span class="pl-c1">addAction:</span>[UIAlertAction <span class="pl-c1">actionWithTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>去设置<span class="pl-pds">"</span></span> <span class="pl-c1">style:</span>UIAlertActionStyleDefault <span class="pl-c1">handler:</span>^(UIAlertAction * _Nonnull action) {
+                <span class="pl-k">if</span> ([<span class="pl-v">self</span> <span class="pl-c1">canOpenSystemSettingView</span>]) {
+                    [<span class="pl-v">self</span> <span class="pl-c1">systemSettingView</span>];
+                }
+            }]];
+            [<span class="pl-v">self</span> <span class="pl-c1">presentViewController:</span>alert <span class="pl-c1">animated:</span><span class="pl-c1">YES</span> <span class="pl-c1">completion:</span><span class="pl-c1">nil</span>];
+        } <span class="pl-k">else</span> {
+            UIAlertView *alert = [[UIAlertView <span class="pl-c1">alloc</span>] <span class="pl-c1">initWithTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>相机权限受限<span class="pl-pds">"</span></span> <span class="pl-c1">message:</span><span class="pl-s"><span class="pl-pds">@"</span>请在iPhone的<span class="pl-cce">\"</span>设置-&gt;隐私-&gt;相机<span class="pl-cce">\"</span>选项中,允许<span class="pl-cce">\"</span>自游邦<span class="pl-cce">\"</span>访问您的相机.<span class="pl-pds">"</span></span> <span class="pl-c1">delegate:</span><span class="pl-c1">nil</span> <span class="pl-c1">cancelButtonTitle:</span><span class="pl-s"><span class="pl-pds">@"</span>好的<span class="pl-pds">"</span></span> <span class="pl-c1">otherButtonTitles:</span><span class="pl-c1">nil</span>];
+            [alert <span class="pl-c1">show</span>];
+        }
+
+        <span class="pl-k">return</span>;
+    }
+
+    QRCodeController *qrcodeVC = [[QRCodeController <span class="pl-c1">alloc</span>] <span class="pl-c1">init</span>];
+    qrcodeVC.<span class="pl-smi">view</span>.<span class="pl-smi">alpha</span> = <span class="pl-c1">0</span>;
+    [qrcodeVC <span class="pl-c1">setDidReceiveBlock:</span>^(<span class="pl-c1">NSString</span> *result) {
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span><span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, result);
+    }];
+    AppDelegate *del = (AppDelegate *)[UIApplication <span class="pl-c1">sharedApplication</span>].<span class="pl-smi">delegate</span>;
+    [del.window.rootViewController <span class="pl-c1">addChildViewController:</span>qrcodeVC];
+    [del.window.rootViewController.view <span class="pl-c1">addSubview:</span>qrcodeVC.view];
+    [UIView <span class="pl-c1">animateWithDuration:</span><span class="pl-c1">0.3</span> <span class="pl-c1">delay:</span><span class="pl-c1">0</span> <span class="pl-c1">options:</span>UIViewAnimationOptionCurveEaseInOut <span class="pl-c1">animations:</span>^{
+        qrcodeVC.<span class="pl-smi">view</span>.<span class="pl-smi">alpha</span> = <span class="pl-c1">1</span>;
+    } <span class="pl-c1">completion:</span>^(<span class="pl-k">BOOL</span> finished) {
+    }];
+}
+
+<span class="pl-c">/**</span>
+<span class="pl-c"> *  是否可以打开设置页面</span>
+<span class="pl-c"> *</span>
+<span class="pl-c"> *  @return</span>
+<span class="pl-c"> */</span>
+- (<span class="pl-k">BOOL</span>)canOpenSystemSettingView {
+    <span class="pl-k">if</span> (IS_VAILABLE_IOS8) {
+        <span class="pl-c1">NSURL</span> *url = [<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span>UIApplicationOpenSettingsURLString];
+        <span class="pl-k">if</span> ([[UIApplication <span class="pl-c1">sharedApplication</span>] <span class="pl-c1">canOpenURL:</span>url]) {
+            <span class="pl-k">return</span> <span class="pl-c1">YES</span>;
+        } <span class="pl-k">else</span> {
+            <span class="pl-k">return</span> <span class="pl-c1">NO</span>;
+        }
+    } <span class="pl-k">else</span> {
+        <span class="pl-k">return</span> <span class="pl-c1">NO</span>;
+    }
+}
+
+<span class="pl-c">/**</span>
+<span class="pl-c"> *  跳到系统设置页面</span>
+<span class="pl-c"> */</span>
+- (<span class="pl-k">void</span>)systemSettingView {
+    <span class="pl-k">if</span> (IS_VAILABLE_IOS8) {
+        <span class="pl-c1">NSURL</span> *url = [<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span>UIApplicationOpenSettingsURLString];
+        <span class="pl-k">if</span> ([[UIApplication <span class="pl-c1">sharedApplication</span>] <span class="pl-c1">canOpenURL:</span>url]) {
+            [[UIApplication <span class="pl-c1">sharedApplication</span>] <span class="pl-c1">openURL:</span>url];
+        }
+    }
+}</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/whde/QRCode">Qrcode</a> is maintained by <a href="https://github.com/whde">whde</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
