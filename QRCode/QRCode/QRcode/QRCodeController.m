@@ -214,13 +214,13 @@
     msg.text = @"将二维码放入框内,即可自动扫描";
     [self.view addSubview:msg];
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-100, self.view.frame.size.width, 100)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.font = [UIFont systemFontOfSize:24];
-    label.text = @"扫一扫,让旅行更轻松";
-    [self.view addSubview:label];
+//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-100, self.view.frame.size.width, 100)];
+//    label.backgroundColor = [UIColor clearColor];
+//    label.textColor = [UIColor whiteColor];
+//    label.textAlignment = NSTextAlignmentCenter;
+//    label.font = [UIFont systemFontOfSize:24];
+//    label.text = @"扫一扫,让旅行更轻松";
+//    [self.view addSubview:label];
     
     
     CGRect leftFrame;
