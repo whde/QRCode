@@ -69,6 +69,9 @@
         if ([output.availableMetadataObjectTypes containsObject:AVMetadataObjectTypeCode128Code]) {
             [a addObject:AVMetadataObjectTypeCode128Code];
         }
+        if ([output.availableMetadataObjectTypes containsObject:AVMetadataObjectTypeDataMatrixCode]) {
+            [a addObject:AVMetadataObjectTypeDataMatrixCode];
+        }
         output.metadataObjectTypes=a;
     }
     AVCaptureVideoPreviewLayer * layer = [AVCaptureVideoPreviewLayer layerWithSession:session];
